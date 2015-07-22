@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>railsclub2015</title>
+
+		<meta name="description" content="Command Line Applications with Ruby">
+		<meta name="author" content="Alexander Merkulov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+		<style type="text/css">
+			.reveal pre code {
+			  background: black;
+			  padding: 10px;
+			}
+			.reveal section img {
+			  border: none;
+			  box-shadow: none;
+			}
+			.slidernav img{
+			  width: 80px;
+			  display: inline-block;
+			  margin: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+			<section>
+<h1>Command Line Applications <i class="fa fa-terminal"></i> <span style="color:#dc322f;">Ruby</span></h1>
+
+<p>Alexander Merkulov</p>
+
+<p><a href="http://github.com/merqlove" target="_blank"><i class="fa fa-github"></i> merqlove</a> / <a href="https://twitter.com/merqlove" target="_blank">@merqlove</a></p>
+</section>
+  <section>
+<h2>DO_Snapshot CLI</h2>
+  <img src="images/example.png">
+<p><a href="http://dosnapshot.merqlove.ru" target="_blank">A command-line snapshot maker for DigitalOcean droplets.</a></p>
+  </section>
+<section><pre class="ruby stretch"><code>$ do_snapshot help s
+Usage:
+  do_snapshot c / s / snap / create
+
+Options:
+  -p, [--protocol=1]                                  # Select api version.
+                                                      # Default: 1
+  -o, [--only=123456 123456 123456]                   # Select some droplets.
+  -e, [--exclude=123456 123456 123456]                # Except some droplets.
+  -k, [--keep=5]                                      # How much snapshots you want to keep?
+                                                      # Default: 10
+  -d, [--delay=5]                                     # Delay between snapshot operation status requests.
+                                                      # Default: 10
+  -m, [--mail=to:yourmail@example.com]                # Receive mail if fail or maximum is reached.
+  -t, [--smtp=user_name:yourmail@example.com]         # SMTP options.
+  -l, [--log=/Users/someone/.do_snapshot/main.log]    # Log file path. By default logging is disabled.
+  -s, [--stop], [--no-stop]                           # Stop creating snapshots if maximum is reached.
+  -v, [--trace], [--no-trace]                         # Verbose mode.
+  -q, [--quiet], [--no-quiet]                         # Quiet mode. If don't need any messages and in console.
+
+Description:
+  `do_snapshot` able to create and cleanup snapshots on your droplets.</code></pre></section>
+<section>
+	<h2>Looking for gems &amp;<br/><a href="http://www.awesomecommandlineapps.com/gems.html" target="_blank">best practices</a></h2>
+	<ul>
+		<li>Rake</li>
+		<li>OptionParser</li>
+		<li>Optitron</li>
+		<li>Commander</li>
+		<li>Main</li>
+		<li>...</li>
+		<li>manually</li>
+		<li>build it anywhere else</li>
+	</ul>
+</section>
+				<section>
+				<h2>Base features &amp; facts comparison</h2>
+				<style type="text/css">
+.tg .tg-s6z2{text-align:center}
+.tg .tg-e3zv{font-weight:bold}
+.tg .tg-lyaj{text-align:center}
+.tg .tg-hgcj{text-align:center;}
+</style>
+				<table class="tg stretch" style="font-size: 67%!important;">
+				<thead>
+  <tr>
+    <th class="tg-031e">Feature</th>
+    <th class="tg-s6z2">OP</th>
+    <th class="tg-hgcj">Thor</th>
+    <th class="tg-s6z2">GLI</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class="tg-031e">Number of downloads</td>
+    <td class="tg-lyaj">as Ruby</td>
+    <td class="tg-hgcj">63 596 500</td>
+    <td class="tg-lyaj">898 088</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv"><strong>Authors</strong></td>
+    <td class="tg-lyaj">Community</td>
+    <td class="tg-hgcj">Y. Katz</td>
+    <td class="tg-lyaj">D. Copeland</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv"><strong>No runtime dependencies</strong></td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">The argument specification and the code</td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Output an option summary</td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Optional and mandatory arguments</td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Arguments can be automatically converted</td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Arguments can be restricted to a certain set</td>
+    <td class="tg-lyaj">Yes</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  </tbody>
+</table>
+				</section>
+
+
+				<section>
+				<h2>Options &amp; arguments comparison</h2>
+				<style type="text/css">
+.tg .tg-s6z2{text-align:center}
+.tg .tg-e3zv{font-weight:bold}
+.tg .tg-lyaj{text-align:center}
+.tg .tg-hgcj{text-align:center;color:#dc322f;}
+</style>
+<table class="tg stretch" style="font-size: 70%!important;">
+<thead>
+  <tr>
+    <th class="tg-031e">Feature</th>
+    <th class="tg-s6z2">OP</th>
+    <th class="tg-hgcj">Thor</th>
+    <th class="tg-lyaj">GLI</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class="tg-031e">Advanced option mode</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Multiple options one-liner</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Options order</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Array arguments</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Hash arguments</td>
+    <td class="tg-s6z2">Yes/No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Enum arguments</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Global(class-wide) arguments</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  </tbody>
+</table>
+				</section>
+
+						<section>
+				<h2>Advanced features comparison</h2>
+				<style type="text/css">
+.tg .tg-s6z2{text-align:center}
+.tg .tg-e3zv{font-weight:bold}
+.tg .tg-lyaj{text-align:center}
+.tg .tg-hgcj{text-align:center;color:#dc322f;}
+</style>
+<table class="tg stretch" style="font-size: 70%!important;">
+<thead>
+  <tr>
+    <th class="tg-031e">Feature</th>
+    <th class="tg-s6z2">OP</th>
+    <th class="tg-hgcj">Thor</th>
+    <th class="tg-lyaj">GLI</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="tg-e3zv"><strong>Description helper</strong></td>
+    <td class="tg-lyaj">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv"><strong>Long description helper</strong></td>
+    <td class="tg-lyaj">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Actions</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes/No</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Subcommands</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Easy Child class loading</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Minimalistic application codebase</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes/No</td>
+  </tr>
+  <tr>
+    <td class="tg-e3zv">Actively maintains</td>
+    <td class="tg-s6z2">Yes/No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">Yes</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Fancy colors</td>
+    <td class="tg-s6z2">No</td>
+    <td class="tg-hgcj">Yes</td>
+    <td class="tg-lyaj">No</td>
+  </tr>
+  </tbody>
+</table>
+				</section>
+				<section>
+				<h2>GLI
+				<a href="https://github.com/davetron5000/gli" style="position:absolute; font-size: 50%; bottom:0; margin-left: 1em;" target="_blank"><small>davetron5000/gli</small></a>
+				</h2>
+				<h3>Git-Like Interface Command Line Parser</h3>
+<p>
+<a href="https://rubygems.org/localeapp"><img src="gli/locale.png" height="50" /></a>
+<a href="https://rubygems.org/cog"><img src="gli/cog.png" height="50" /></a>
+<a href="https://rubygems.org/flapjack"><img src="gli/flapjack.png" height="50" /></a>
+<a href="https://rubygems.org/gooddata"><img src="gli/good_data.png" height="50" /></a>
+</p>
+<ul>
+	<li>Useful if you work on monolith binary.</li>
+	<li>Quite readable code.</li>
+	<li>No OOP required :)</li>
+	<li>Has scaffold generator with TDD/BDD approach.</li>
+	<li>Regular updates.</li>
+</ul>
+				</section>
+<section><pre class="stretch"><code>├── Gemfile
+├── README.rdoc
+├── Rakefile
+├── bin
+│   └── some # our binary
+├── dist     # tools for deploy
+├── features # if cucumber
+│   ├── some.feature
+│   ├── step_definitions
+│   │   └── some_steps.rb
+│   └── support
+│       └── env.rb
+├── lib
+│   ├── some
+│   │   └── version.rb
+│   └── some.rb
+├── some.gemspec
+└── test
+    ├── default_test.rb
+    └── test_helper.rb</code></pre>
+</section>
+<section>
+<h2>Add some commands</h2>
+
+<pre class="ruby stretch"><code>desc 'DEFAULT. Create and cleanup snapshot\'s'
+command [:s, :snap] do |c|
+    c.desc 'Select api version.'
+    c.arg_name '1'
+    c.flag [:p,:protocol], default_value: 2, type: Numeric
+
+    c.desc 'How much snapshots you want to keep?'
+    c.arg_name '5'
+    c.flag [:k,:keep],  default_value: 10, type: Numeric    
+    ...
+    c.desc 'Stop creating snapshots if maximum is reached.'
+    c.switch [:s,:stop]
+    
+    c.action do |global_options,options,args|
+        DoSnapshot::Command.new(options).snap
+    end
+end
+
+desc 'Shows the version of the currently installed DoSnapshot gem'
+version DoSnapshot::VERSION
+</code></pre>
+    <p><a href="https://gist.github.com/merqlove/5874b9d1c0b6ca5a0e76" target="_blank">gist</a></p>
+</section>
+<section>
+<h2>Add some logic</h2>
+
+<pre class="ruby stretch"><code>pre do |global,command,options,args|
+  $some_service = DoSnapshot::Service.new(options)
+  true
+end
+
+post do |global,command,options,args|
+  $some_service = nil
+end
+
+on_error do |exception|
+  $some_service.send(exception)  
+end
+
+exit run(ARGV)</code></pre></section><section>
+<h2>But what with Array, Hash arguments?</h2>
+<h1> <i class="fa fa-smile-o"></i></h1>
+
+</section><section>
+<h2>Custom parsers <i class="fa fa-smile-o"></i></h2>
+
+<pre class="ruby"><code>accept Array do |value|
+  value.split(/\s/).map(&amp;:strip)
+end
+
+accept Hash do |value|
+  result = {}
+  value.split(/\s/).each do |pair|
+    k,v = pair.split(/:/)
+    result[k] = v
+  end
+  result
+end
+
+...
+
+desc 'SMTP options.'
+arg_name 'user_name:yourmail@example.com'
+flag :smtp, type: Hash</code></pre>
+
+<pre class="ruby"><code>$ do_snapshot -k 5 --smtp=user_name:user1 password:123456</code></pre>
+<p><a href="https://gist.github.com/merqlove/5874b9d1c0b6ca5a0e76" target="_blank">gist</a></p>
+</section><section>
+<h2>Time to try :)</h2>
+
+<pre><code>$ do_snapshot help
+NAME
+    do_snapshot - `do_snapshot` able to create and cleanup snapshots on your droplets.
+
+SYNOPSIS
+    do_snapshot [global options] command [command options] [arguments...]
+
+GLOBAL OPTIONS
+    -c, --clean=arg                                - Cleanup snapshots after create. If you have more images than you want to `keep`, older will be deleted. (default: true)
+    -d, --delay=5                                  - Delay between snapshot operation status requests. (default: 10)
+    --digital_ocean_access_token=YOURLONGAPITOKEN  - DIGITAL_OCEAN_ACCESS_TOKEN. if you can't use environment. (default: none)
+    --help                                         - Show this message
+    -k, --keep=5                                   - How much snapshots you want to keep? (default: 10)
+    -l, --log=/Users/someone/.do_snapshot/main.log - Log file path. By default logging is disabled. (default: none)
+    -p, --protocol=1                               - Select api version. (default: 2)
+    --smtp=user_name:yourmail@example.com          - SMTP options. (default: none)
+    -q, --quiet=arg                                - Quiet mode. If don't need any messages and in console. (default: none)
+    -s, --stop=arg                                 - Stop creating snapshots if maximum is reached. (default: none)
+    --timeout=250                                  - Timeout in sec's for events like Power Off or Create Snapshot. (default: 3600)
+    -v, --trace=arg                                - Verbose mode. (default: none)
+
+COMMANDS
+    version        - Shows the version of the currently installed DoSnapshot gem
+    help               - Shows a list of commands or help for one command
+    s, snap - DEFAULT. Create and cleanup snapshot's</code></pre></section><section>
+<h1>What about tests?</h1>
+<img src="images/troll_killself.jpg" style="float:left;" alt=""/>
+<ul>
+	<li>RSpec/Minitest</li>
+	<li>Aruba</li>
+	<li>Cucumber</li>
+</ul>
+</section>
+<section>
+<h2>Feature test</h2>
+<pre class="makefile"><code># features/some.feature
+Feature: My bootstrapped app kinda works
+  In order to get going on coding my awesome app
+  I want to have aruba and cucumber setup
+  So I don't have to do it myself
+
+  Scenario: App just runs
+    When I get help for "some"
+    Then the exit status should be 0
+
+# features/step_definitions/some_steps.rb
+When /^I get help for "([^"]*)"$/ do |app_name|
+  @app_name = app_name
+  step %(I run `#{app_name} help`)
+end</code></pre></section>
+<section>
+<h2 style="position:relative;"><img src="images/thor_hammer_black.png" height="50" style="margin:0;padding:0;" alt=""/> THOR
+<a href="https://github.com/erikhuda/thor" style="position:absolute; font-size: 50%; bottom:0; margin-left: 1em;" target="_blank"><small>erikhuda/thor</small></a>
+</h2>
+<p>
+<a href="https://rubygems.org/gems/bundler"><img src="thor/bundler.png" height="50" /></a>
+<a href="https://rubygems.org/gems/railties"><img src="thor/rails.png" height="50" /></a>
+<a href="https://rubygems.org/gems/guard"><img src="thor/guard.png" height="50" /></a>
+<a href="https://rubygems.org/gems/bourbon"><img src="thor/bourbon.svg" height="30" /></a>
+<a href="https://rubygems.org/gems/figaro"><img src="thor/figaro.png" height="40" /></a>
+<br/>
+<a href="https://rubygems.org/gems/berkshelf"><img src="thor/chef.png" height="50" /></a>
+<a href="https://rubygems.org/gems/activemerchant"><img src="thor/shopify.png" height="50" /></a>
+<a href="https://rubygems.org/gems/coveralls"><img src="thor/coveralls.png" height="30" /></a>
+<a href="https://rubygems.org/gems/headshot"><img src="thor/headshot.png" height="50" /></a>
+<a href="https://rubygems.org/gems/fog"><img src="thor/fog.png" height="50" /></a>
+</p>
+<ul>
+	<li>Thor is a toolkit for building powerful command-line interfaces. <string>Widely used</string>.</li>
+	<li>Easy to split monolith application.</li>
+	<li>The syntax is Rake-like.</li>
+	<li>Thor is more than just option parser <i class="fa fa-smile-o"></i></li>
+	<li>A lot of tutorials.</li>
+</ul>
+</section>
+<section>
+<div style="width:40%; display:inline-block; text-align:left; font-size: 90%;">
+<pre class="stretch"><code>├── bin
+│   └── do_snapshot
+├── dist
+│   ├── ...
+│   ├── gem.rake
+│   ├── manifest.rake
+│   └── zip.rake
+├── lib
+│   ├── do_snapshot
+│   │   ├── cli.rb
+│   │   ├── command.rbb
+│   │   ├── log.rb
+│   │   ├── runner.rb
+│   │   └── ...
+│   └── do_snapshot.rb
+├── spec
+│   ├── do_snapshot
+│   │   └── ...
+│   ├── fixtures
+│   ├── support
+│   │   ├── aruba.rb
+│   │   └── ...
+│   ├── do_snapshot_spec.rb
+│   └── spec_helper.rb
+├── Gemfile
+├── README.md
+├── Rakefile
+└── do_snapshot.gemspec
+</code></pre>
+</div>
+<div style="width:50%; display:inline-block; text-align:left; font-size: 90%; vertical-align:top">
+<dl>
+	<dt>bin</dt>
+	<dd>Binary file(s)</dd>
+	<dt>dist</dt>
+	<dd>Rake deploy scripts</dd>
+	<dt>lib/*/runner</dt>
+	<dd>CLI monolith or parent</dd>
+	<dt>lib/*/cli</dt>
+	<dd>Application live here</dd>
+	<dt>lib/*/command</dt>
+	<dd>Command interface</dd>
+	<dt>lib/*/log</dt>
+	<dd>Application logger</dd>
+	<dt>spec</dt>
+	<dd>RSpec tests including features &amp; fixtures</dd>
+</dl>
+</div>
+</section>
+<section>
+<h2>Binary</h2>
+
+<pre class="ruby"><code>#!/usr/bin/env ruby
+
+Signal.trap('INT') { exit 1 }
+
+# resolve bin path, ignoring symlinks
+require 'pathname'
+bin_file = Pathname.new(__FILE__).realpath
+
+# add self to libpath
+$LOAD_PATH.unshift File.expand_path('../../lib', bin_file)
+
+require 'do_snapshot/runner'
+
+DoSnapshot::Runner.new(ARGV.dup).execute!
+</code></pre></section><section>
+<h2>Runner</h2>
+
+<pre class="ruby stretch"><code>class Runner
+  def initialize(argv, stdin = STDIN, stdout = STDOUT, stderr = STDERR, kernel = Kernel)
+    @argv, @stdin, @stdout, @stderr, @kernel = argv, stdin, stdout, stderr, kernel
+  end
+  def execute!
+    exit_code = begin
+      run_cli
+    rescue StandardError =&gt; e
+      display_backtrace_otherwise(e)
+    rescue SystemExit =&gt; e
+      e.status
+    ensure
+      clean_before_exit
+    end
+    @kernel.exit(exit_code)
+  end
+  ...
+end</code></pre>
+
+<p><a href="https://github.com/merqlove/do_snapshot/blob/master/lib/do_snapshot/runner.rb" target="_blank">github</a></p>
+</section><section>
+<h2>Sample CLI monolith</h2>
+
+<div style="width:40%; display:inline-block; font-size: 90%; text-align:left;">
+<p>Sample class for CLI application.</p>
+
+<p><strong>map</strong> - mapping commands.</p>
+
+<p><strong>initialize</strong> - prepare environment.</p>
+
+<p><strong>no_commands</strong> - define helper or private methods.</p>
+</div>
+<div style="width:50%; display:inline-block; vertical-align: top;">
+<pre class="ruby"><code>module DoSnapshot
+  class CLI &lt; Thor
+    include DoSnapshot::Helpers
+
+    default_task :snap
+
+    map %w( c s create )  =&gt; :snap
+    map %w( -V ) =&gt; :version
+
+    def initialize(*args)
+      super
+
+      # custom initialization
+    end
+
+    ...
+
+    no_commands do
+      # define helpers
+    end
+  end
+end
+</code></pre>
+<p><a href="https://github.com/merqlove/do_snapshot/blob/master/lib/do_snapshot/cli.rb" target="_blank">github</a></p>
+</div>
+</section><section>
+<h2>THOR DSL</h2>
+
+<div style="width:40%; display:inline-block; text-align:left; font-size: 90%; vertical-align:top">
+
+<!-- <p>Base structure for our CLI application.</p> -->
+
+<p><strong>desc</strong> - description &amp; shortcuts</p>
+
+<p><strong>long_desc </strong>- multiline command description.</p>
+
+<p><strong>method_option </strong>- command option</p>
+</div>
+<div style="width:50%; display:inline-block; vertical-align:top">
+<pre class="ruby stretch"><code>desc 'c / s / snap / create', '...'
+long_desc &lt;&lt;-LONGDESC
+`do_snapshot` able to create snapshots ...
+
+VERSION: #{DoSnapshot::VERSION}
+LONGDESC
+method_option :mail,
+              type: :hash,
+              aliases: %w( -m ),
+              banner: 'to:yourmail@example.com',
+              desc: 'Receive mail if fail or maximum is reached.'
+
+def snap
+  ...
+end</code></pre>
+<p><a href="https://github.com/merqlove/do_snapshot/blob/master/lib/do_snapshot/cli.rb" target="_blank">github</a></p>
+</div></section>
+
+<section>
+<h2>method_option</h2>
+<ul>
+	<li>aliases — A list of aliases for option. </li>
+	<li>banner — The short description of the option, printed out in the usage description.</li>
+	<li>default — The default value of this option if it is not provided.</li>
+	<li>lazy_default — A default that is only passed if the cli option is passed without a value.</li>
+	<li>desc — A description for the option. </li>
+	<li>required — Indicates that an option is required</li>
+	<li>type — :string, :hash, :array, :numeric, or :boolean</li>
+	<li>enum — A list of allowed values for this option.</li>
+</ul>
+</section>
+
+<section>
+<h2>Thor actions</h2>
+<img src="images/thor_cat.jpg" style="float:left;" height="500" alt=""/>
+<ul>
+	<li>say</li>
+	<li>ask</li>
+	<li>yes?</li>
+	<li>no?</li>
+	<li>add_file</li>
+	<li>...</li>
+	<li>copy_file</li>
+	<li>template</li>
+	<li>inside</li>
+	<li>run</li>
+</ul>
+</section>
+
+<section>
+<h1>Test tools</h1>
+<ul>
+	<li>RSpec</li>
+	<li>Aruba</li>
+	<li>Webmock</li>
+	<li>Rake</li>
+</ul>
+</section>
+<section>
+<h2>Aruba &amp; RSpec are friends</h2>
+
+<pre class="ruby"><code># support/aruba.rb
+
+require 'aruba/rspec'
+require 'do_snapshot/runner'
+
+Aruba.configure do |config|
+  config.command_launcher = :in_process
+  config.main_class = DoSnapshot::Runner
+end</code></pre></section>
+<section>
+<h2>Aruba useful helpers</h2>
+
+
+<ul>
+	<li>run
+	</li>
+	<li>run_simple
+	</li>
+	<li>all_stdout
+	</li>
+	<li>all_stderr
+	</li>
+	<li>all_output
+	</li>
+	<li>expand_path
+	</li>
+	<li>with_environment
+	</li>
+</ul>
+</section>
+<section>
+<h2>Thor specs</h2>
+
+<pre class="ruby stretch"><code>RSpec.describe DoSnapshot::Runner, type: :aruba do
+  context 'commands' do
+    context '.help' do
+      it 'shows a help message' do
+        run 'do_snapshot help'
+        expect(all_stdout)
+          .to match('Commands:')
+      end
+    end
+
+    context '.version' do
+      it 'with right version' do
+        run 'do_snapshot version'
+        expect(all_stdout).to include(DoSnapshot::VERSION)
+      end
+    end
+  end
+end</code></pre></section>
+<section>
+<h2>Check output</h2>
+<img class="stretch" src="images/example.png">
+<p><a href="http://dosnapshot.merqlove.ru" target="_blank">Try</a></p>
+</section>
+<section>
+<h2>Best practices:</h2>
+<ul>
+	<li>Deploy to repository of your choice.</li>
+	<li>Use single Rake task for pushing to any service.</li>
+	<li>Provide zip, tgz packs of your CLI app.</li>
+	<li>Use Rubocop &amp; Coverage metrics.</li>
+	<li>Don't be too lazy to write tests.</li>
+	<li>Symantic versioning.</li>
+	<li>...</li>
+	<li>So, as for any Ruby application.</li>
+</ul>
+</section>
+<section>
+<h2>Examples &amp; How-to</h2>
+<ul>
+	<li><a href="https://github.com/chef/omnibus">github.com/chef/omnibus</a></li>
+	<li><a href="https://github.com/mitchellh/vagrant">github.com/mitchellh/vagrant</a></li>
+	<li><a href="https://github.com/merqlove/do_snapshot">github.com/merqlove/do_snapshot</a></li>
+	<li><a href="https://github.com/pseudomuto/bookery">github.com/pseudomuto/bookery</a></li>
+	<li><a href="http://www.awesomecommandlineapps.com/gems.html">Awesome CommandLine Apps</a></li>
+	<li><a href="http://rubylearning.com/blog/2011/01/03/how-do-i-make-a-command-line-tool-in-ruby/">Thor &amp; OptionParser comparison.</a></li>
+</ul>
+
+</section>
+<section>
+<h2>Happy coding!</h2>
+<img src="images/troll_killself.jpg" style="float:left;" alt=""/>
+<ul>
+	<li><a href="https://github.com/erikhuda/thor">Thor</a></li>
+	<li><a href="http://ruby-doc.org/stdlib-2.2.2/libdoc/optparse/rdoc/OptionParser.html">OptionParser API</a></li>
+	<li><a href="https://github.com/cucumber/aruba">Aruba</a></li>
+	<li><a href="http://rspec.info">RSpec</a></li>
+	<li><a href="https://github.com/davetron5000/gli">GLI</a></li>
+</ul>
+</section>
+<section>
+<h2>Thanks!</h2>
+<hr/>
+<h2>Q?</h2>
+
+
+<p>2015</p>
+
+<p><a href="https://github.com/merqlove" target="_blank">merqlove</a> / <a href="https://twitter.com/merqlove" target="_blank">@merqlove</a></p>
+</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				margin: 0.0,
+
+				minScale: 0.2,
+    		maxScale: 1.5,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+	</body>
+</html>
