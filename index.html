@@ -58,8 +58,11 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 			<section>
-<h1>Command Line Applications <i class="fa fa-terminal"></i> <span style="color:#dc322f;">Ruby</span></h1>
-
+<h1>Command Line Applications <span class="fa-stack fa-lg" style="zoom:40%; top:0.15em">
+  <i class="fa fa-square fa-stack-2x"></i>
+  <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+</span> <span style="color:#dc322f;">Ruby</span></h1>
+<hr>
 <p>Alexander Merkulov</p>
 
 <p><a href="http://github.com/merqlove" target="_blank"><i class="fa fa-github"></i> merqlove</a> / <a href="https://twitter.com/merqlove" target="_blank">@merqlove</a></p>
@@ -69,7 +72,7 @@
   <img src="images/example.png">
 <p><a href="http://dosnapshot.merqlove.ru" target="_blank">A command-line snapshot maker for DigitalOcean droplets.</a></p>
   </section>
-<section><pre class="ruby stretch"><code>$ do_snapshot help s
+<section><pre class="ruby" style="font-size: 0.4em"><code>$ do_snapshot help s
 Usage:
   do_snapshot c / s / snap / create
 
@@ -309,7 +312,7 @@ Description:
 </table>
 				</section>
 				<section>
-				<h2>GLI
+				<h2 style="position:relative;">GLI
 				<a href="https://github.com/davetron5000/gli" style="position:absolute; font-size: 50%; bottom:0; margin-left: 1em;" target="_blank"><small>davetron5000/gli</small></a>
 				</h2>
 				<h3>Git-Like Interface Command Line Parser</h3>
@@ -327,7 +330,9 @@ Description:
 	<li>Regular updates.</li>
 </ul>
 				</section>
-<section><pre class="stretch"><code>├── Gemfile
+<section>
+<p><strong>$ gli init some command version</strong></p>
+<pre><code>├── Gemfile
 ├── README.rdoc
 ├── Rakefile
 ├── bin
@@ -351,7 +356,7 @@ Description:
 <section>
 <h2>Add some commands</h2>
 
-<pre class="ruby stretch"><code>desc 'DEFAULT. Create and cleanup snapshot\'s'
+<pre class="ruby"><code>desc 'DEFAULT. Create and cleanup snapshot\'s'
 command [:s, :snap] do |c|
     c.desc 'Select api version.'
     c.arg_name '1'
@@ -377,7 +382,7 @@ version DoSnapshot::VERSION
 <section>
 <h2>Add some logic</h2>
 
-<pre class="ruby stretch"><code>pre do |global,command,options,args|
+<pre class="ruby"><code>pre do |global,command,options,args|
   $some_service = DoSnapshot::Service.new(options)
   true
 end
@@ -421,7 +426,7 @@ flag :smtp, type: Hash</code></pre>
 </section><section>
 <h2>Time to try :)</h2>
 
-<pre><code>$ do_snapshot help
+<pre style="font-size: 0.4em;"><code>$ do_snapshot help
 NAME
     do_snapshot - `do_snapshot` able to create and cleanup snapshots on your droplets.
 
@@ -446,9 +451,9 @@ COMMANDS
     version        - Shows the version of the currently installed DoSnapshot gem
     help               - Shows a list of commands or help for one command
     s, snap - DEFAULT. Create and cleanup snapshot's</code></pre></section><section>
-<h1>What about tests?</h1>
+<h2>What about tests?</h2>
 <img src="images/troll_killself.jpg" style="float:left;" alt=""/>
-<ul>
+<ul style="margin-top: 1.5em;">
 	<li>RSpec/Minitest</li>
 	<li>Aruba</li>
 	<li>Cucumber</li>
@@ -535,9 +540,9 @@ end</code></pre></section>
 	<dt>dist</dt>
 	<dd>Rake deploy scripts</dd>
 	<dt>lib/*/runner</dt>
-	<dd>CLI monolith or parent</dd>
+	<dd>Application runner</dd>
 	<dt>lib/*/cli</dt>
-	<dd>Application live here</dd>
+	<dd>CLI monolith or parent</dd>
 	<dt>lib/*/command</dt>
 	<dd>Command interface</dd>
 	<dt>lib/*/log</dt>
@@ -600,7 +605,7 @@ end</code></pre>
 <p><strong>no_commands</strong> - define helper or private methods.</p>
 </div>
 <div style="width:50%; display:inline-block; vertical-align: top;">
-<pre class="ruby"><code>module DoSnapshot
+<pre class="ruby" style="font-size: 0.4em;"><code>module DoSnapshot
   class CLI &lt; Thor
     include DoSnapshot::Helpers
 
@@ -639,7 +644,7 @@ end
 <p><strong>method_option </strong>- command option</p>
 </div>
 <div style="width:50%; display:inline-block; vertical-align:top">
-<pre class="ruby stretch"><code>desc 'c / s / snap / create', '...'
+<pre class="ruby stretch" style="font-size: 0.4em;"><code>desc 'c / s / snap / create', '...'
 long_desc &lt;&lt;-LONGDESC
 `do_snapshot` able to create snapshots ...
 
@@ -674,7 +679,7 @@ end</code></pre>
 <section>
 <h2>Thor actions</h2>
 <img src="images/thor_cat.jpg" style="float:left;" height="500" alt=""/>
-<ul>
+<ul style="margin-top: 0.5em;">
 	<li>say</li>
 	<li>ask</li>
 	<li>yes?</li>
@@ -731,9 +736,9 @@ end</code></pre></section>
 </ul>
 </section>
 <section>
-<h2>Thor specs</h2>
+<h2>Aruba within RSpec</h2>
 
-<pre class="ruby stretch"><code>RSpec.describe DoSnapshot::Runner, type: :aruba do
+<pre class="ruby"><code>RSpec.describe DoSnapshot::Runner, type: :aruba do
   context 'commands' do
     context '.help' do
       it 'shows a help message' do
@@ -783,7 +788,6 @@ end</code></pre></section>
 </section>
 <section>
 <h2>Happy coding!</h2>
-<img src="images/troll_killself.jpg" style="float:left;" alt=""/>
 <ul>
 	<li><a href="https://github.com/erikhuda/thor">Thor</a></li>
 	<li><a href="http://ruby-doc.org/stdlib-2.2.2/libdoc/optparse/rdoc/OptionParser.html">OptionParser API</a></li>
